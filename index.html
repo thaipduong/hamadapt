@@ -201,7 +201,7 @@ code {
                     <!--<td width=300px align=left>-->
                     <!-- <a href="http://arxiv.org/pdf/1603.08511.pdf"> -->
                   <!-- <td><a href="#"><img class="layered-paper-big" style="height:175px" src="./resources/images/paper.png"/></a></td> -->
-                  <td><a href="http://www.roboticsproceedings.org/rss17/p086.pdf"><img style="height:300px" src="./resources/images/thumbnails.png"/></a></td>
+                  <td><a href="https://thaipduong.github.io/hamadapt/"><img style="height:300px" src="./resources/images/thumbnails.png"/></a></td>
                   <td><span style="font-size:14pt">Thai Duong, Nikolay Atanasov<br><br>
                           Learning Adaptive Control for SE(3) Hamiltonian Dynamics<br><br>
                   In Submission, 2021.<br><br>
@@ -223,7 +223,7 @@ code {
                     <br>
             <td width=600px>
                       <center>
-                          <span style="font-size:28px">Settings
+                          <span style="font-size:28px">Problem Settings
                           <br>
                           <br>
                     </center>
@@ -233,13 +233,13 @@ code {
                 <tr>
                     <td width=600px>
                       <center>
-                          <a href="./resources/images/DL.jpg"><img src = "./resources/images/DL.jpg" width="600px"></img></href></a><br>
+                          <a href="./resources/images/problemsetting.png"><img src = "./resources/images/problemsetting.png" width="900px"></img></href></a><br>
                     </center>
                     </td>
                 </tr>
                     <td width=600px>
                       <center>
-                          <span style="font-size:18px"><i> Given a training dataset from the true dynamics, we want to find an approximated dynamics with parameter theta that minimizes the loss function.</i>
+                          <span style="font-size:18px"><i> Given a training dataset from state-control tracjectories collected under different disturbance realizations, we want to learn an adaptive controller, consisting of a trajectory-tracking controller that compensates for the disturbances and an adaptation law that estimates the disturbances online.</i>
                     </center>
                     </td>
                 </tr>
@@ -249,7 +249,7 @@ code {
                 <tr>
                     <td width=600px>
                       <center>
-                          <a href="./resources/images/SE3_states.png"><img src = "./resources/images/SE3_states.png" width="600px"></img></href></a><br>
+                          <a href="./resources/images/stateconstraints.png"><img src = "./resources/images/stateconstraints.png" width="900px"></img></href></a><br>
                     </center>
                     </td>
                 </tr>
@@ -260,18 +260,25 @@ code {
                     </td>
                 </tr>
             </table>
-            <br><br>
+<br><br>
+            <td width=600px>
+                      <center>
+                          <span style="font-size:28px">Technical Approach
+                          <br>
+                          <br>
+                    </center>
+                    </td>
                 <table align=center width=600px>
                 <tr>
                     <td width=600px>
                       <center>
-                          <a href="./resources/images/arch.png"><img src = "./resources/images/arch.png" width="600px"></img></href></a><br>
+                          <a href="./resources/images/technicalapproach.png"><img src = "./resources/images/technicalapproach.png" width="900px"></img></href></a><br>
                     </center>
                     </td>
                 </tr>
                     <td width=600px>
                       <center>
-                          <span style="font-size:18px"><i> To enforce these constraints by construction, we embed these constraints in the architecture of the parametric function approximated dynamics</i>
+                          <span style="font-size:18px"><i> Our approach consists of two stages: 1) offline Hamiltonian-based dynamics and disturbance model learning; and 2) online adaptive control.</i>
                     </center>
                     </td>
                 </tr>
@@ -281,18 +288,42 @@ code {
                 <tr>
                     <td width=600px>
                       <center>
-                          <a href="./resources/images/neural_ode_dl.png"><img src = "./resources/images/neural_ode_dl.png" width="400px"></img></href></a><br>
+                          <a href="./resources/images/archdesign.png"><img src = "./resources/images/archdesign.png" width="900px"></img></href></a><br>
                     </center>
                     </td>
                 </tr>
                     <td width=600px>
                       <center>
-                          <span style="font-size:18px"><i> We place the approximated dynamics function in a neural ODE framework (Chen et. al., NeurIPS'18) which predicts the state at a future time using an ODE solver and back-propagates the loss gradients efficiently using adjoint method.</i>
+                          <span style="font-size:18px"><i> We design the architecture of the neural ODE network using the Hamilton's equations of motion on the SE(3) with parameter theta for the Hamiltonian dynamics and parameter phi for disturbance model. This structure guarantee the law of energy conservation and the SE(3) constraints by construction.</i>
                     </center>
                     </td>
                 </tr>
             </table>
             <br><br>
+                <table align=center width=600px>
+                <tr>
+                    <td width=600px>
+                      <center>
+                          <a href="./resources/images/onlineadaptivecontrol.png"><img src = "./resources/images/onlineadaptivecontrol.png" width="900px"></img></href></a><br>
+                    </center>
+                    </td>
+                </tr>
+                    <td width=600px>
+                      <center>
+                          <span style="font-size:18px"><i> The Hamiltonian dynamics parameter theta is used to design a trajectory-tracking controller from and energy perspective while the disturbance model parameter phi is used to develop the adaptaion law. The two controllers create an adaptive controller with stability analysis provided in the paper.</i>
+                    </center>
+                    </td>
+                </tr>
+            </table>
+
+            <br><br>
+            <td width=600px>
+                      <center>
+                          <span style="font-size:28px"> Results
+                          <br>
+                          <br>
+                    </center>
+                    </td>
 <table align=center width=900px>
                 <tr>
                     <td width=900px>
@@ -306,12 +337,13 @@ code {
                 </tr>
                     <td width=600px>
                       <center>
-                          <span style="font-size:18px"><i> For pendulum, we collect data by applying random control on a pendulum gym simulator. After learning the dynamics from data, we design an energy-based controller to drive the pendulum toward the upright position using the learned dynamics function.</i>
+                          <span style="font-size:18px"><i> For pendulum, we collect data by applying random control on a pendulum gym simulator. After learning the dynamics and the disturbance model from data, the proposed adaptive controller drives the pendulum toward the angle 3*pi/4 using the learned dynamics.</i>
                     </center>
                     </td>
                 </tr>
             </table>
             <br><br>
+
                 <table align=center width=900px>
                 <tr>
                     <td width=900px>
@@ -352,7 +384,7 @@ code {
                 </tr>
                     <td width=600px>
                       <center>
-                          <span style="font-size:18px"><i>Experiment 1: No adaptive control + spiral trajectory. The drone is drifted due to external winds and defective rotors.</i>
+                          <span style="font-size:18px"><i>Experiment 1 (no adaptive control + spiral trajectory): the drone is drifted due to external winds and defective rotors.</i>
                     </center>
                     </td>
                 </tr>
@@ -369,7 +401,7 @@ code {
                 </tr>
                     <td width=600px>
                       <center>
-                          <span style="font-size:18px"><i>Experiment 1: Adaptive control + spiral trajectory. The disturbance is estimated online and compensated for by the controller.</i>
+                          <span style="font-size:18px"><i>Experiment 1 (adaptive control + spiral trajectory): we can estimate the disturbance after a few seconds, compensate for it and successfully finish the tracking task.</i>
                     </center>
                     </td>
                 </tr>
@@ -386,7 +418,7 @@ code {
                 </tr>
                     <td width=600px>
                       <center>
-                          <span style="font-size:18px"><i>Experiment 2: No adaptive control + diamond-shaped trajectory. As the rotors suddenly become defective, The drone drifts and drops down to the ground due to disturbances.</i>
+                          <span style="font-size:18px"><i>Experiment 2 (no adaptive control + diamond-shaped trajectory): as the rotors suddenly become defective after 5s, The drone drifts and drops down to the ground due to disturbances.</i>
                     </center>
                     </td>
                 </tr>
@@ -403,7 +435,7 @@ code {
                 </tr>
                     <td width=600px>
                       <center>
-                          <span style="font-size:18px"><i>Experiment 2: Adaptive control + diamond-shaped trajectory. The drone is able to recover and keep tracking the trajectory.</i>
+                          <span style="font-size:18px"><i>Experiment 2 (adaptive control + diamond-shaped trajectory): the drone is able to recover and finishes tracking the trajectory.</i>
                     </center>
                     </td>
                 </tr>
